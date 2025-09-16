@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Bugüne Özel Kartını Seç 🎴</title>
+    <style>
+    :root{
+      --bg:#0f172a;
+      --card-w:120px;
+      --card-h:160px;
+      --gap:16px;
+      color: #e6eef8;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#071029 0%, #0b1b2e 100%);}
+    .wrap{max-width:1100px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    header h1{font-size:20px;margin:0}
+    .controls{display:flex;gap:8px;align-items:center}
+    .btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.04);padding:8px 12px;border-radius:10px;color:inherit;text-decoration:none;cursor:pointer}
+    .count{font-weight:600;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,0.02)}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--card-w),1fr));gap:var(--gap);margin-top:18px}
+
+    /* card flip */
+    .card{width:var(--card-w);height:var(--card-h);perspective:1000px;cursor:pointer}
+    .inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s}
+    .card.flipped .inner{transform:rotateY(180deg)}
+    .face{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;padding:12px;text-align:center;font-weight:700}
+    .front{font-size:20px;color:rgba(255,255,255,0.95);box-shadow:0 8px 18px rgba(2,6,23,0.6)}
+    .back{transform:rotateY(180deg);background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(0,0,0,0.06));font-size:16px;font-family:cursive;padding:16px;line-height:1.4}
+
+    footer{margin-top:22px;color:#c6d6ea;font-size:13px;display:flex;gap:8px;align-items:center;justify-content:space-between}
+    @media (max-width:520px){:root{--card-w:90px;--card-h:120px;}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <div>
+            <h1>Bugüne Özel Kartını Seç 🎴</h1>
+            <div style="font-size:13px;color:#bcd2f0;margin-top:6px">
+                İstersen birini seç, istersen hepsini aç! 😄
+                Yüzünü güldürecek mesajı bulana kadar devam et ✨
+            </div>
+        </div>
+        <div class="controls">
+            <div class="count" id="viewCount">Görüntülenme: —</div>
+            <button class="btn" id="copyLinkBtn">Linki Kopyala</button>
+            <a id="whatsappShare" class="btn" target="_blank" rel="noopener">WhatsApp’ta Paylaş</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="grid" id="cardGrid" aria-live="polite"></div>
+    </main>
+
+    <footer>
+        <div>Toplam <strong>26</strong> kart var — yeter ki yüzünde tebessüm olsun 🌞</div>
+        <div style="opacity:.9">İpucu: WhatsApp paylaş butonunu kullanarak sevdiklerine gönderebilirsin.</div>
+    </footer>
+</div>
+
+<script>
+  // --- Türkçe mesajlar (26 adet) ---
+  const MESSAGES = [
+    "Gülümse, çünkü tebessüm bulaşıcıdır 😄",
+    "Güzel düşünen, güzel görür ✨",
+    "Bugün senin günün — tadını çıkar!",
+    "Küçük bir kahkaha, büyük bir mutluluk getirir.",
+    "Her yeni gün, yeni bir şans demektir.",
+    "Sen yeter ki inan, imkansız sadece biraz zaman alır.",
+    "Her fırtınadan sonra gökkuşağı çıkar 🌈",
+    "Gönlünde ne varsa hayatına o yansır.",
+    "Kendi ışığını parlat, başkalarının yolunu da aydınlat.",
+    "Bir kahve, bir tebessüm, bir dost — hayat güzel.",
+    "Mutluluk, paylaştıkça çoğalır.",
+    "Her şeyin bir zamanı var; bugünün zamanı gülümsemek 😊",
+    "İyi şeyler zaman alır, sabırla parılda.",
+    "Gül bahçesi dikenlere rağmen açar 🌹",
+    "Bugün kendine nazik ol.",
+    "Sen çok değerlisin, unutma ⭐",
+    "Hayata gülümse, hayat da sana gülsün.",
+    "Her nefes yeni bir başlangıçtır.",
+    "En güzel yolculuk içindekine doğru olandır.",
+    "Umut varsa, yol da vardır.",
+    "Düşlerini hafife alma — onlar sana yol gösterir.",
+    "Bir teşekkür, bir kalbi ısıtır ❤️",
+    "Her gün mucizelerle doludur, sen yeter ki gör.",
+    "Küçük anlar, büyük mutlulukların anahtarıdır.",
+    "Senin enerjin, ortamı aydınlatıyor 🌟",
+    "Bugün özel — çünkü içinde sen varsın."
+  ];
+
+  // 26 renk
+  const COLORS = [
+    '#FF6B6B','#FF8E72','#FFB86B','#FFD36B','#FFF36B','#D9FF6B','#9DFF6B','#6BFF83',
+    '#6BFFD6','#6BE8FF','#6BB8FF','#6B8BFF','#8C6BFF','#B86BFF','#FF6BE1','#FF6BC7',
+    '#FF9DC0','#FFB3A7','#FFCEA9','#FFF0B3','#E6FFE6','#D6F7FF','#EED6FF','#FBE6FF',
+    '#F0F8FF','#E8FFF2'
+  ];
+
+  const grid = document.getElementById('cardGrid');
+
+  // kartları karıştır
+  const indices = Array.from({length:26}, (_,i)=>i);
+  indices.sort(()=>Math.random()-0.5);
+
+  // kart oluştur
+  indices.forEach((i)=>{
+    const color = COLORS[i % COLORS.length];
+    const message = MESSAGES[i];
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.tabIndex = 0;
+    card.setAttribute('role','button');
+    card.setAttribute('aria-pressed','false');
+    card.innerHTML = `
+      <div class="inner">
+        <div class="face front" style="background:${color}">${i+1}</div>
+        <div class="face back">${message}</div>
+      </div>
+    `;
+    card.addEventListener('click', ()=> toggleFlip(card));
+    card.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); toggleFlip(card);} });
+    grid.appendChild(card);
+  });
+
+  function toggleFlip(card){
+    const flipped = card.classList.toggle('flipped');
+    card.setAttribute('aria-pressed', flipped ? 'true' : 'false');
+  }
+
+  // --- Görüntülenme sayacı (sadece yerel) ---
+  const viewCountEl = document.getElementById('viewCount');
+  const key = 'local_view_count_v2';
+  const val = Number(localStorage.getItem(key) || 0) + 1;
+  localStorage.setItem(key,val);
+  viewCountEl.textContent = 'Görüntülenme: ' + val;
+
+  // --- WhatsApp paylaş ---
+  const whatsappShare = document.getElementById('whatsappShare');
+  function buildWhatsAppShare(){
+    const text = `Bugüne Özel Kartını Seç 🎴 — yüzünü güldürecek mesajı bulana kadar açmaya devam et! ${location.href}`;
+    return `https://wa.me/?text=${encodeURIComponent(text)}`;
+  }
+  whatsappShare.href = buildWhatsAppShare();
+
+  const copyLinkBtn = document.getElementById('copyLinkBtn');
+  copyLinkBtn.addEventListener('click', async ()=>{
+    try{
+      await navigator.clipboard.writeText(location.href);
+      copyLinkBtn.textContent = 'Kopyalandı!';
+      setTimeout(()=> copyLinkBtn.textContent = 'Linki Kopyala',1500);
+    }catch(e){
+      alert('Kopyalama başarısız. Lütfen adres çubuğundan kopyalayın.');
+    }
+  });
+</script>
+</body>
+</html>
