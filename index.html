@@ -132,12 +132,26 @@
     card.setAttribute('aria-pressed', flipped ? 'true' : 'false');
   }
 
-  // --- Görüntülenme sayacı (sadece yerel) ---
+  // --- Görüntülenme sayacı (CountAPI) ---
   const viewCountEl = document.getElementById('viewCount');
-  const key = 'local_view_count_v2';
-  const val = Number(localStorage.getItem(key) || 0) + 1;
-  localStorage.setItem(key,val);
-  viewCountEl.textContent = 'Görüntülenme: ' + val;
+
+  // kendi namespace ve key değerini buraya yaz
+  const COUNT_NAMESPACE = 'seninkullaniciadi';
+  const COUNT_KEY = 'bugune-ozel-kartlar';
+
+  async function bumpAndGetCount(){
+    try{
+      const res = await fetch(`https://api.countapi.xyz/hit/${COUNT_NAMESPACE}/${COUNT_KEY}`);
+      if(!res.ok) throw new Error('CountAPI hatası');
+      const data = await res.json();
+      viewCountEl.textContent = 'Görüntülenme: ' + data.value;
+    }catch(err){
+      viewCountEl.textContent = 'Sayaç çalışmadı';
+      console.error(err);
+    }
+  }
+
+  bumpAndGetCount();
 
   // --- WhatsApp paylaş ---
   const whatsappShare = document.getElementById('whatsappShare');
