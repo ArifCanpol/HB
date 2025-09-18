@@ -132,27 +132,6 @@
     card.setAttribute('aria-pressed', flipped ? 'true' : 'false');
   }
 
-  // --- Görüntülenme sayacı (CountAPI) ---
-  const viewCountEl = document.getElementById('viewCount');
-
-  // kendi namespace ve key değerini buraya yaz
-  const COUNT_NAMESPACE = 'canpolska@gmail.com';
-  const COUNT_KEY = 'HB';
-
-  async function bumpAndGetCount(){
-    try{
-      const res = await fetch(`https://api.countapi.xyz/hit/${COUNT_NAMESPACE}/${COUNT_KEY}`);
-      if(!res.ok) throw new Error('CountAPI hatası');
-      const data = await res.json();
-      viewCountEl.textContent = 'Görüntülenme: ' + data.value;
-    }catch(err){
-      viewCountEl.textContent = 'Sayaç çalışmadı';
-      console.error(err);
-    }
-  }
-
-  bumpAndGetCount();
-
   // --- WhatsApp paylaş ---
   const whatsappShare = document.getElementById('whatsappShare');
   function buildWhatsAppShare(){
@@ -171,6 +150,15 @@
       alert('Kopyalama başarısız. Lütfen adres çubuğundan kopyalayın.');
     }
   });
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T72VFVCJE1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T72VFVCJE1');
 </script>
 </body>
 </html>
