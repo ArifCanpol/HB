@@ -2,206 +2,95 @@
 <html lang="tr">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-    <title>Kart Mesajı</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Site Geri Bildirimi</title>
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-T72VFVCJE1"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-T72VFVCJE1');
-    </script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-T72VFVCJE1');
+</script>
 
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&display=swap');
 
-    :root{
-      --card-w:160px;
-      --card-h:220px;
-      --gap:16px;
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    }
+  html, body {
+    margin:0; padding:0;
+    height:100%; width:100%;
+    display:flex; justify-content:center; align-items:center;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    background: linear-gradient(135deg,#ffdde1,#ee9ca7,#c779d0);
+  }
 
-    html, body {
-      margin: 0;
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(135deg,#ffdde1 0%, #ee9ca7 50%, #c779d0 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+  .container {
+    padding: 30px; border-radius: 12px;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    max-width: 500px;
+    text-align:center;
+  }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(var(--card-w), 1fr));
-      gap: var(--gap);
-      max-width: 100%;
-      max-height: -webkit-fill-available; /* iOS fix */
-      max-height: 100vh;
-      padding: 10px;
-      box-sizing: border-box;
-      overflow-y: auto; /* dikey scroll sadece grid içinde */
-    }
+  h1 { font-family:'Dancing Script', cursive; color:#a83279; font-size:2em; margin-bottom:12px; }
+  p { margin:16px 0; font-size:1.1em; line-height:1.5; color:#333; }
 
-    @media (max-width: 768px) {
-      :root { --card-w: 120px; --card-h: 160px; }
-    }
-    @media (max-width: 480px) {
-      :root { --card-w: 100px; --card-h: 140px; }
-    }
+  label { display:block; margin-top:12px; text-align:left; font-size:1em; color:#555; }
+  select, textarea { width:100%; margin-top:6px; padding:10px; border-radius:6px; border:1px solid #ccc; font-size:1em; }
+  button { margin-top:16px; padding:10px 20px; border:none; border-radius:8px; background:#ff9aa2; color:white; cursor:pointer; font-size:1em; }
+  button:hover { transform: scale(1.05); }
 
-    .card{
-      width:var(--card-w);
-      height:var(--card-h);
-      perspective:1000px;
-      opacity:0;
-      transform:scale(0.8);
-      transition:opacity 0.8s ease, transform 0.8s ease;
-    }
-    .card.visible{ opacity:1; transform:scale(1); }
-
-    .inner{
-      position:relative;width:100%;height:100%;
-      transform-style:preserve-3d;
-      -webkit-transform-style: preserve-3d;
-      transition: transform 1s cubic-bezier(.68,-0.55,.27,1.55);
-    }
-    .card.flipped .inner{
-      transform:rotateY(180deg);
-      -webkit-transform:rotateY(180deg);
-    }
-
-    .face{
-      position:absolute;inset:0;
-      border-radius:14px;
-      backface-visibility:hidden;
-      -webkit-backface-visibility:hidden;
-      display:flex;align-items:center;justify-content:center;
-      padding:12px;text-align:center;line-height:1.4;
-    }
-
-    .front{
-      color:#fff;font-size:20px;font-weight:700;
-      box-shadow:0 8px 18px rgba(0,0,0,0.25);
-    }
-
-    .back{
-      transform:rotateY(180deg);
-      background:rgba(255,255,255,0.9);
-      color:#a83279;
-      font-family: 'Dancing Script', cursive;
-      font-size:18px;
-      padding:14px;
-      border:1px solid rgba(0,0,0,0.08);
-      box-shadow:0 6px 12px rgba(0,0,0,0.15);
-      display:flex;align-items:center;justify-content:center;
-      text-align:center;
-    }
-
-    .typing {
-      display:inline-block;
-      white-space:pre-wrap;
-      opacity:0;
-    }
-    .typing.glow {
-      animation: glowPulse 1.2s infinite alternate;
-    }
-    @keyframes glowPulse {
-      from { text-shadow: 0 0 6px rgba(255,120,180,0.6), 0 0 10px rgba(255,180,200,0.4);}
-      to { text-shadow: 0 0 12px rgba(255,120,180,1), 0 0 20px rgba(255,180,200,0.8);}
-    }
-  </style>
+</style>
 </head>
 <body>
-<div class="grid" id="cardGrid"></div>
+
+<div class="container" id="feedbackContainer">
+    <h1>Hey, buraya kadar geldin! 🌸</h1>
+    <p>
+        Öncelikle teşekkürler! Umarım burada keyifli bir zaman geçirmişsindir. 😄
+        Şimdi feedback zamanı! Eğer biraz daha devam etmemi istiyorsan, buradan bana bildirebilirsin.
+        İster düşüncelerini paylaş, ister öneri ve isteklerini yaz… hepsi benim için değerli!
+    </p>
+
+    <form id="feedbackForm" action="https://formsubmit.co/canpolska@gmail.com" method="POST" target="_blank">
+        <label>
+            Siteyi devam ettirmemi ister misin?
+            <select name="devamEt" required>
+                <option value="">Seç...</option>
+                <option value="evet">Evet, devam et!</option>
+                <option value="hayır">Hayır, teşekkürler</option>
+            </select>
+        </label>
+
+        <label>
+            Beğendiğin veya beğenmediğin yerler, öneriler:
+            <textarea name="yorum" placeholder="Düşüncelerini buraya yaz..."></textarea>
+        </label>
+
+        <label>
+            Eğer farklı bir şey görmek istiyorsan:
+            <textarea name="istek" placeholder="Mesela farklı bir içerik, format vs."></textarea>
+        </label>
+
+        <input type="hidden" name="_captcha" value="false">
+        <button type="submit">Gönder</button>
+    </form>
+</div>
 
 <script>
-    const PARTS = [
-      "Birini gerçekten seviyorsan aslında onu iki kez seversin.",
-      "İlki çabuktur, kelebeklerin hissettirdiği andır.",
-      "Gülüşüne, kahkahasına âşık olursun.",
-      "Konuşurken ellerini kullanışına hayran olursun.",
-      "İsmini özel bir anlam taşırmış gibi söyleyişine vurulursun.",
-      "Bu, sevmesi kolay olan halidir onun.",
-      "Dünyaya gösterdiği yüzüdür.",
-      "Zaman geçer, maskeler düşer.",
-      "Sakladığı tarafları görürsün.",
-      "Kaygılarını ve güven sorunlarını fark edersin.",
-      "Fazla uzun süren sessizliklerini duyarsın.",
-      "Büyük yaralardan gelen küçük alışkanlıklarını görürsün.",
-      "İşte çoğu insan tam da burada vazgeçer.",
-      "Ama eğer kalırsan, o dağınıklığı gördükten sonra bile…",
-      "Romantik ya da kolay olmadığında bile onu seçersen…",
-      "İşte o zaman ikinci aşk başlar.",
-      "Gerçek ve sağlam olan aşk.",
-      "Seni görüyorum ve hiçbir yere gitmiyorum, dersin.",
-      "Çünkü zor tarafları ortaya çıktıktan sonra da seversin.",
-      "Bu noktada sevmek artık bir his değil, bir sözdür.",
-      "Kalmak, yanında olmaktır.",
-      "Zor anlarda da elini bırakmamaktır.",
-      "İşte o zaman aşk gerçek olur.",
-      "Ve bu, sonsuza dek sürebilecek bir bağdır."
-    ];
+  const form = document.getElementById("feedbackForm");
 
-    const COLORS = [
-      "#FF9AA2","#FFB7B2","#FFDAC1","#E2F0CB","#B5EAD7","#C7CEEA",
-      "#FDCB82","#F8B195","#F67280","#C06C84","#6C5B7B","#355C7D"
-    ];
-
-    const grid = document.getElementById("cardGrid");
-
-    PARTS.forEach((part, i)=>{
-      const card = document.createElement("div");
-      card.className = "card";
-      const color = COLORS[i % COLORS.length];
-      card.innerHTML = `
-        <div class="inner">
-          <div class="face front" style="background:${color}">🎴</div>
-          <div class="face back"><span class="typing"></span></div>
-        </div>
+  form.addEventListener("submit", function(e){
+    // Form gönderildikten sonra kullanıcıya teşekkür mesajı gösterebiliriz
+    setTimeout(()=>{
+      document.getElementById("feedbackContainer").innerHTML = `
+        <h1>Teşekkürler! 🌟</h1>
+        <p>Mesajın başarıyla gönderildi. Düşüncelerin benim için çok değerli. 😄</p>
       `;
-      grid.appendChild(card);
-    });
+    }, 300);
+  });
+</script>
 
-    const cards = document.querySelectorAll(".card");
-
-    function typeText(el, text, speed=50, callback){
-      let i = 0;
-      el.style.opacity = 1;
-      el.classList.add("glow");
-      function type(){
-        if(i < text.length){
-          el.textContent += text.charAt(i);
-          i++;
-          setTimeout(type, speed);
-        } else {
-          el.classList.remove("glow");
-          if(callback) callback();
-        }
-      }
-      type();
-    }
-
-    function revealSequentially(index=0){
-      if(index >= cards.length) return;
-      const card = cards[index];
-      card.classList.add("visible");
-      setTimeout(()=>{
-        card.classList.add("flipped");
-        const textEl = card.querySelector(".typing");
-        typeText(textEl, PARTS[index], 60, ()=>{
-          setTimeout(()=> revealSequentially(index+1), 400);
-        });
-      }, 400);
-    }
-
-    window.addEventListener("load", ()=>{
-      revealSequentially(0);
-    });
-  </script>
 </body>
 </html>
