@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="tr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title>Site Geri Bildirimi</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Sitemiz Onarımda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-T72VFVCJE1"></script>
@@ -15,83 +16,238 @@
 </script>
 
     <style>
-  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&display=swap');
+html,body{
+  margin:0;
+  height:100%;
+  background:radial-gradient(circle at 20% 30%, #4a274a, #0d0b22 80%);
+  font-family:"Playfair Display",serif;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
 
-  html, body {
-    margin:0; padding:0;
-    height:100%; width:100%;
-    display:flex; justify-content:center; align-items:center;
-    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    background: linear-gradient(135deg,#ffdde1,#ee9ca7,#c779d0);
-  }
+.bg{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at 30% 30%, rgba(255,200,220,0.06), transparent 60%),
+             radial-gradient(circle at 70% 70%, rgba(180,150,255,0.07), transparent 60%);
+  filter:blur(60px);
+  z-index:-2;
+  animation: softMove 20s ease-in-out infinite alternate;
+}
+@keyframes softMove{
+  from{transform:scale(1);}
+  to{transform:scale(1.2);}
+}
 
-  .container {
-    padding: 30px; border-radius: 12px;
-    background: rgba(255,255,255,0.95);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    max-width: 500px;
-    text-align:center;
-  }
+.container{
+  text-align:center;
+  max-width:700px;
+  padding:20px;
+  transition:opacity 1s, transform 1s;
+}
+.container.hidden{
+  opacity:0;
+  transform:translateY(-50px);
+  pointer-events:none;
+}
 
-  h1 { font-family:'Dancing Script', cursive; color:#a83279; font-size:2em; margin-bottom:12px; }
-  p { margin:16px 0; font-size:1.1em; line-height:1.5; color:#333; }
+h1{
+  color:#ffd6e7;
+  font-size:2rem;
+  margin-bottom:12px;
+}
+.message{
+  font-family:"Inter",sans-serif;
+  color:rgba(255,255,255,0.9);
+  font-size:1rem;
+  line-height:1.6;
+  margin-bottom:30px;
+}
+button{
+  background:linear-gradient(90deg,#ffbcd2,#ff93c2);
+  border:none;
+  border-radius:30px;
+  color:#2a042c;
+  padding:10px 24px;
+  font-family:"Inter",sans-serif;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.3s ease;
+  box-shadow:0 0 10px rgba(255,180,220,0.3);
+}
+button:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 20px rgba(255,180,220,0.5);
+}
 
-  label { display:block; margin-top:12px; text-align:left; font-size:1em; color:#555; }
-  select, textarea { width:100%; margin-top:6px; padding:10px; border-radius:6px; border:1px solid #ccc; font-size:1em; }
-  button { margin-top:16px; padding:10px 20px; border:none; border-radius:8px; background:#ff9aa2; color:white; cursor:pointer; font-size:1em; }
-  button:hover { transform: scale(1.05); }
+#poemStage{
+  position:absolute;
+  top:50%;
+  left:0;
+  width:100%;
+  text-align:center;
+  overflow:hidden;
+  height:360px;
+  transform:translateY(-50%);
+  display:none;
+}
 
+.line{
+  font-size:1.4rem;
+  opacity:0;
+  transform:translateY(40px);
+  animation: fadeUp 1.2s forwards;
+  margin:16px 0;
+  white-space:pre-wrap;
+}
+
+.line span{
+  display:inline-block;
+  opacity:0;
+  margin-right:2px;
+  text-shadow:
+    0 0 5px rgba(255,255,255,0.7),
+    0 0 10px rgba(255,170,240,0.3),
+    0 0 20px rgba(255,200,220,0.2);
+  animation: fadeLetter 0.05s forwards;
+}
+
+@keyframes fadeUp{
+  to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes fadeLetter{
+  to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes scrollUp{
+  0%{transform:translateY(0); opacity:1;}
+  100%{transform:translateY(-80px); opacity:0;}
+}
+
+#endMessage{
+  display:none;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:2rem;
+  color:#ffd6e7;
+  text-align:center;
+  font-family:"Playfair Display",serif;
+  opacity:0;
+  transition:opacity 2s;
+}
 </style>
 </head>
 <body>
 
-<div class="container" id="feedbackContainer">
-    <h1>Hey, buraya kadar geldin! 🌸</h1>
-    <p>
-        Öncelikle teşekkürler! Umarım burada keyifli bir zaman geçirmişsindir. 😄
-        Şimdi feedback zamanı! Eğer biraz daha devam etmemi istiyorsan, buradan bana bildirebilirsin.
-        İster düşüncelerini paylaş, ister öneri ve isteklerini yaz… hepsi benim için değerli!
-        Ve merak etme, kim olduğun asla farkedilmeyecek, kimliğin gizli kalacak👻
+<div class="bg"></div>
+
+<div class="container" id="intro">
+    <h1>Sitemiz Onarımda</h1>
+    <p class="message">
+        Henüz sitemiz görüntülemeye hazır değil.<br>
+        Ama madem buraya kadar zahmet edip geldin,<br>
+        seni boş çevirmeyelim dedik...<br>
+        Küçük bir şiir bırakalım sana 🌙
     </p>
-
-    <form id="feedbackForm" action="https://formsubmit.co/canpolska@gmail.com" method="POST" target="_blank">
-        <label>
-            Siteyi devam ettirmemi ister misin?
-            <select name="devamEt" required>
-                <option value="">Seç...</option>
-                <option value="evet">Evet, devam et!</option>
-                <option value="hayır">Hayır, teşekkürler</option>
-            </select>
-        </label>
-
-        <label>
-            Beğendiğin veya beğenmediğin yerler, öneriler:
-            <textarea name="yorum" placeholder="Düşüncelerini buraya yaz..."></textarea>
-        </label>
-
-        <label>
-            Eğer farklı bir şey görmek istiyorsan:
-            <textarea name="istek" placeholder="Mesela farklı bir içerik, format vs."></textarea>
-        </label>
-
-        <input type="hidden" name="_captcha" value="false">
-        <button type="submit">Gönder</button>
-    </form>
+    <button id="startBtn">Şiiri Başlat</button>
 </div>
 
+<div id="poemStage"></div>
+<div id="endMessage">Yakında görüşmek üzere 💫</div>
+
 <script>
-  const form = document.getElementById("feedbackForm");
+const poemLines = [
+"Baktım gülüşünden güzel şiir olur,",
+"Sevdim gitti.",
+"Sen yüzüne sürgün olduğum kadın;",
+"Madem sevmiyorsun,",
+"O zaman sahip çık gözlerine!",
+"Dönüp dolaşıp",
+"Değmesinler gözlerime!",
+"Belki de konuşuyordur gözlerin,",
+"Ama ben gözce bilmiyorum ki.",
+"Sessizce biliyorum,",
+"Usulca biliyorum,",
+"Masumca biliyorum...",
+"Sahi, sarkıntılığa girer mi acaba,",
+"Ayrılırken gözlerimin sana sulanması?",
+"Dökmeye niyetim yok içimi,",
+"Zor sığdırdım zaten...",
+"Özledim.",
+"Söyleyeceklerim bu kadar,",
+"Kısa ve derin.",
+"Bu arada,",
+"‘Kimse benimle oynamıyor’ diye ağlayan çocuk,",
+"Sen büyü hele,",
+"Bak ne oyunlar oynayacaklar seninle...",
+"Ve bugün bir kez daha anladım!",
+"Adamlığı, kadınlardan öğrenecek erkek çok..."
+];
 
-  form.addEventListener("submit", function(e){
-    // Form gönderildikten sonra kullanıcıya teşekkür mesajı gösterebiliriz
-    setTimeout(()=>{
-      document.getElementById("feedbackContainer").innerHTML = `
-        <h1>Teşekkürler! 🌟</h1>
-        <p>Mesajın başarıyla gönderildi. Düşüncelerin benim için çok değerli. 😄</p>
-      `;
-    }, 300);
+const intro = document.getElementById("intro");
+const stage = document.getElementById("poemStage");
+const endMsg = document.getElementById("endMessage");
+const btn = document.getElementById("startBtn");
+let index = 0;
+let visibleLines = [];
+
+btn.addEventListener("click", () => {
+  intro.classList.add("hidden");
+  setTimeout(() => {
+    intro.style.display = "none";
+    stage.style.display = "block";
+    startPoem();
+  }, 1000);
+});
+
+function createLine(text){
+  const div = document.createElement("div");
+  div.className = "line";
+  text.split("").forEach((char,i)=>{
+    const span = document.createElement("span");
+    span.textContent = char;
+    span.style.animationDelay = (i*0.06)+"s";
+    div.appendChild(span);
   });
-</script>
+  return div;
+}
 
+function startPoem(){
+  const interval = setInterval(()=>{
+    if(index >= poemLines.length){
+      clearInterval(interval);
+      // Son satır gösterildikten 2 saniye sonra mesajı göster
+      setTimeout(showEndMessage, 2000);
+      return;
+    }
+
+    const line = createLine(poemLines[index]);
+    stage.appendChild(line);
+    visibleLines.push(line);
+
+    if(visibleLines.length > 6){
+      const old = visibleLines.shift();
+      old.style.animation = "scrollUp 2s forwards";
+      setTimeout(()=>old.remove(),2000);
+    }
+
+    index++;
+  }, 2800);
+}
+
+function showEndMessage(){
+  // Şiir satırlarını tamamen temizle
+  stage.innerHTML = "";
+  // Mesajı göster
+  endMsg.style.display = "block";
+  setTimeout(()=>{ endMsg.style.opacity = 1; }, 100);
+}
+</script>
 </body>
 </html>
